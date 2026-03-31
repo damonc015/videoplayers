@@ -6,6 +6,7 @@ import { Video, videoFeatures } from "@videojs/react/video";
 import { VideoSkin } from "@videojs/react/video/skin";
 
 const Player = createPlayer({ features: videoFeatures });
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 interface MyPlayerProps {
   src: string;
@@ -18,7 +19,7 @@ export const MyPlayer = ({ src }: MyPlayerProps) => {
         <Video src={src} playsInline>
           <track
             kind="captions"
-            src="/sample.vtt"
+            src={`${base}/sample.vtt`}
             srcLang="en"
             label="English"
           />

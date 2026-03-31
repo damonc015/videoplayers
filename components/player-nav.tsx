@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,12 +21,12 @@ export const PlayerNav = () => {
     >
       <NavigationMenuList className="justify-start ml-4">
         <NavigationMenuItem>
-          <NavigationMenuLink
+          <Link
             href="/"
             className={`${navigationMenuTriggerStyle()} ${fontWeight}`}
           >
             Home
-          </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger className={fontWeight}>
@@ -35,9 +36,9 @@ export const PlayerNav = () => {
             <ul className="flex flex-col w-48 p-1">
               {players.slice(0, -1).map(({ label, href }) => (
                 <li key={href}>
-                  <NavigationMenuLink href={href}>
+                  <Link href={href} className="flex items-center gap-2 rounded-lg p-2 text-sm hover:bg-muted">
                     <span className={fontWeight}>{label}</span>
-                  </NavigationMenuLink>
+                  </Link>
                 </li>
               ))}
             </ul>
