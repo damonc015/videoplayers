@@ -33,7 +33,7 @@ export const PlayerNav = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="flex flex-col w-48 p-1">
-              {players.map(({ label, href }) => (
+              {players.slice(0, -1).map(({ label, href }) => (
                 <li key={href}>
                   <NavigationMenuLink href={href}>
                     <span className={fontWeight}>{label}</span>

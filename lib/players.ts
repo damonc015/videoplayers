@@ -1,32 +1,32 @@
 export type Feature = {
   name: string;
-  /** One entry per player, in the same order as the `players` array */
   support: (0 | 1)[];
 };
 
-// support order: [Ableplayer, AcornPlayer, Accessible HTML5 (paypal), Video.js, MediaElement.js, Plyr]
+// support order: [Ableplayer, AcornPlayer, Video.js, MediaElement.js, Plyr]
 export const features: Feature[] = [
-  { name: "Play/ Pause Controls", support: [1, 1, 0, 0, 0, 0] },
-  { name: "Volume Controls", support: [1, 1, 0, 0, 0, 0] },
-  { name: "Playlist Controls & Support", support: [1, 0, 0, 0, 0, 0] },
-  { name: "Keyboard Navigation", support: [1, 1, 0, 0, 0, 0] },
-  { name: "Fullscreen Controls", support: [1, 1, 0, 0, 0, 0] },
+  { name: "Play/ Pause Controls", support: [1, 1, 1, 1, 1] },
+  { name: "Volume Controls", support: [1, 1, 1, 0, 1] },
+  { name: "Playlist Controls & Support", support: [1, 0, 0, 0, 0] },
+  { name: "Keyboard Navigation", support: [1, 1, 1, 1, 1] },
+  { name: "Fullscreen Controls", support: [1, 1, 1, 1, 1] },
   {
     name: "Closed Captions Control & Subtitles Support",
-    support: [1, 1, 0, 0, 0, 0],
+    support: [1, 1, 1, 1, 1],
   },
-  { name: "Transcript Control & Support", support: [1, 0, 0, 0, 0, 0] },
-  { name: "Picture-in-Picture", support: [0, 0, 0, 0, 0, 0] },
-  { name: "Playback Speed Controls", support: [1, 0, 0, 0, 0, 0] },
-  { name: "HD Quality Controls", support: [0, 0, 0, 0, 0, 0] },
-  { name: "Duration Display", support: [1, 1, 0, 0, 0, 0] },
-  { name: "Buffer Icon", support: [0, 1, 0, 0, 0, 0] },
-  { name: "Load Icon", support: [0, 1, 0, 0, 0, 0] },
-  { name: "Fallback for older browsers", support: [1, 0, 0, 0, 0, 0] },
+  { name: "Transcript Control & Support", support: [1, 0, 0, 0, 0] },
+  { name: "Picture-in-Picture", support: [0, 0, 1, 0, 1] },
+  { name: "Playback Speed Controls", support: [1, 0, 1, 0, 1] },
+  { name: "HD Quality Controls", support: [0, 0, 0, 0, 0] },
+  { name: "Duration Display", support: [1, 1, 1, 1, 1] },
+  { name: "Buffer Icon", support: [1, 1, 1, 1, 1] },
+  { name: "Load Icon", support: [1, 1, 1, 1, 1] },
+  { name: "Fallback for older browsers", support: [1, 0, 0, 0, 0] },
   // double check this one
-  { name: "Thumbnail Insertion", support: [1, 1, 0, 0, 0, 0] },
+  { name: "Thumbnail Insertion", support: [1, 1, 1, 1, 1] },
   // temp, maybe media format supported
-  { name: "HLS Streaming", support: [0, 0, 0, 0, 0, 0] },
+  { name: "HLS Streaming", support: [0, 0, 0, 0, 0] },
+  { name: "Language Translations", support: [0, 0, 0, 0, 1] },
 ];
 
 export type Player = {
@@ -64,24 +64,20 @@ export const players: Player[] = [
   {
     label: "Acornplayer",
     href: "/acorn",
-    description: [],
+    description: [
+      "Recently archived 3/31/26, possible it will no longer be maintained",
+    ],
     pros: [],
-    cons: [],
+    cons: [
+      "Icon display box and closed captioning icon disappears in full screen mode. All other function icons and buffer player status were responsive. ",
+      "There is little to no control over the playback function and the picture-in-picture icon as it is not available in the bottom display and must be accessed via full screen mode. Transcript can only be accessed when selecting closed captioning language.",
+      "The playback and transcript functions do not have their own separate icons. Captions are not consistent as they disappear in full screen mode. Volume icon placement will change locations depending on the video or streaming platform. ",
+      "The icon display box becomes transparent in full screen mode and icons cannot be separately identified from one another. In addition, based on heuristics 1, 3 and 4, the design is simple but complex and inconsistent. ",
+      "lacks a few features old player held",
+      "may no longer be maintained",
+    ],
     links: [
       { label: "Repo", href: "https://github.com/ghinda/acornmediaplayer" },
-    ],
-  },
-  {
-    label: "Accessible HTML5 (paypal)",
-    href: "/accesspaypal",
-    description: [],
-    pros: [],
-    cons: [],
-    links: [
-      {
-        label: "Repo",
-        href: "https://github.com/paypal/accessible-html5-video-player",
-      },
     ],
   },
   {
@@ -89,14 +85,13 @@ export const players: Player[] = [
     href: "/videojs",
     description: [],
     pros: [
-      "Large plugin ecosystem",
-      "Active community and maintenance",
-      "Skinnable via CSS",
+      "recently updated (documentation is updated, compatible with vanilla js and react)",
+      "customizable in most aspects",
     ],
     cons: [
-      "Accessibility requires extra plugins",
-      "Larger bundle size",
-      "Plugin quality varies",
+      "Media player is inflexible with keyboard shortcuts. Functions require the user to interact with the icon to interact with the media player. ",
+      "made for standard browsers, testing for fallbacks falls on us",
+      "no transcript functionality",
     ],
     links: [
       { label: "Repo", href: "https://github.com/videojs/video.js" },
@@ -123,9 +118,11 @@ export const players: Player[] = [
   {
     label: "Plyr",
     href: "/plyr",
-    description: [],
+    description: [
+      "contains community plugins to work with other web frameworks, customizable in most aspects but no transcript functionality",
+    ],
     pros: [],
-    cons: ["No transcripts"],
+    cons: ["No transcript functionality"],
     links: [
       { label: "Repo", href: "https://github.com/sampotts/plyr" },
       { label: "Site", href: "https://plyr.io/" },
@@ -140,6 +137,7 @@ export const players: Player[] = [
       "JW Player is no longer maintained.",
       "Ozplayer - A repo for a plugin for OzPlayer says its accessible video player is under commerical software.",
       "Flowplayer is under Wowza.",
+      "Accessible HTML5 (PayPal) - Repo is broken, the only resource is its npm page which requires assets from its repo.",
     ],
     links: [
       { label: "JW Player Repo", href: "https://github.com/jwplayer/jwplayer" },
@@ -148,6 +146,10 @@ export const players: Player[] = [
         href: "https://github.com/accessibilityoz/ozplayer-wordpress",
       },
       { label: "Flowplayer Repo", href: "https://flowplayer.com/" },
+      {
+        label: "Accessible HTML5 (PayPal) Repo",
+        href: "https://github.com/paypal/accessible-html5-video-player",
+      },
     ],
   },
 ];
