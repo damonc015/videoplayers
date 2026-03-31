@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -82,12 +83,12 @@ export default function Home() {
               {href !== "/" && (
                 <div className="mt-6 border-t pt-4">
                   <h3 className="font-semibold">Demo</h3>
-                  <a
+                  <Link
                     href={href}
                     className="mt-1 inline-block text-sm text-blue-600 underline underline-offset-4 hover:text-blue-800 dark:text-blue-400"
                   >
                     Open {label} demo
-                  </a>
+                  </Link>
                 </div>
               )}
               <div className="mt-6 border-t pt-4">
