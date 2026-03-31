@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/videoplayer/_next/static/chunks/0dbhjjzl8qfwv.js","/videoplayer/_next/static/chunks/15vzu8g2u820_.js","/videoplayer/_next/static/chunks/0_1x8k16hy17p.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex justify-center items-center w-2/3 h-full mx-auto","children":["$","iframe",null,{"src":"/able/index.html","className":"w-full h-full border-0","title":"Able Player"}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"WrEVZxzw6PrT2o9E1pVwf"}
+4:null

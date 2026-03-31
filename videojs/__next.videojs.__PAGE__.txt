@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[73141,["/videoplayer/_next/static/chunks/0dbhjjzl8qfwv.js","/videoplayer/_next/static/chunks/15vzu8g2u820_.js","/videoplayer/_next/static/chunks/0_1x8k16hy17p.js","/videoplayer/_next/static/chunks/0u7nma1lteeu4.js"],"MyPlayer"]
+3:I[97367,["/videoplayer/_next/static/chunks/0dbhjjzl8qfwv.js","/videoplayer/_next/static/chunks/15vzu8g2u820_.js","/videoplayer/_next/static/chunks/0_1x8k16hy17p.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+:HL["/videoplayer/_next/static/chunks/12mzn3idp_tbd.css","style"]
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex justify-center items-center w-2/3 h-3/4 mx-auto pt-2","children":["$","$L2",null,{"src":"/sample.mp4"}]}],[["$","link","0",{"rel":"stylesheet","href":"/videoplayer/_next/static/chunks/12mzn3idp_tbd.css","precedence":"next"}],["$","script","script-0",{"src":"/videoplayer/_next/static/chunks/0u7nma1lteeu4.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"WrEVZxzw6PrT2o9E1pVwf"}
+5:null
