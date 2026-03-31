@@ -7,15 +7,15 @@
   </head>
   <body>
     <video id="video1" preload="auto" style="max-width:100%">
-      <source type="video/mp4" src="/sample.mp4" />
-      <track kind="captions" src="/sample.vtt" srclang="en" label="English" />
+      <source type="video/mp4" src="../sample.mp4" />
+      <track kind="captions" src="../sample.vtt" srclang="en" label="English" />
     </video>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/7.0.7/mediaelement-and-player.min.js"></script>
     <script>
       var player = new MediaElementPlayer("video1", {
         stretching: "responsive",
-        iconSprite: "/mediaelement/build/mejs-controls.svg",
+        iconSprite: "build/mejs-controls.svg",
       });
     </script>
   </body>
