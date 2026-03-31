@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Acorn Player</title>
+    <link
+      href="/acorn/build/acornmediaplayer.base.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link
+      href="/path/to/themes/acorn.theme.css"
+      rel="stylesheet"
+      type="text/css"
+    /> -->
+  </head>
+  <body>
+    <video id="video1" data-able-player preload="auto">
+      <source type="video/mp4" src="/sample.mp4" />
+      <track kind="captions" src="/sample.vtt" />
+    </video>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="/acorn/build/jquery.acornmediaplayer.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("video, audio").acornMediaPlayer();
+      });
+    </script>
+  </body>
+</html>
