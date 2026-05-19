@@ -97,7 +97,7 @@ export const players: Player[] = [
       "Media player is inflexible with keyboard shortcuts. Functions require the user to interact with the icon to interact with the media player. ",
       "made for standard browsers, testing for fallbacks falls on us",
       "no transcript functionality - have to add our own",
-      "really high saturation",
+      "really high saturation, no buffer spinner",
     ],
     links: [
       { label: "Repo", href: "https://github.com/videojs/video.js" },
