@@ -50,11 +50,16 @@ export const players: Player[] = [
       "automatic text highlighting of transcript as media plays",
       "can customize captions and subtitles",
     ],
-    pros: ["Has all features old player held", "customizable in many aspects"],
+    pros: [
+      "Has all features old player held",
+      "customizable in many aspects",
+      "saturation is best among all players",
+    ],
     cons: [
       "Unorthodox speed control design, a turtle and rabbit icon for slower and faster",
       "Three features (Speed icons, settings and audio description) are unique to this media player and may impose initial light cognitive load. Icon placement may also cause some light cognitive load as most icons like the speed and closed caption icons are located on the  lower left rather than the typical right side of the display ",
       "Media player is inflexible to basic keyboard shortcuts. Keyboard shortcuts provided by the media player are difficult to comprehend and therefore impose cognitive load. All other functions including transcript are flexible. ",
+      "Fullscreen controls are not working, buffer status is not working",
     ],
     links: [
       { label: "Repo", href: "https://github.com/ableplayer/ableplayer" },
@@ -91,7 +96,8 @@ export const players: Player[] = [
     cons: [
       "Media player is inflexible with keyboard shortcuts. Functions require the user to interact with the icon to interact with the media player. ",
       "made for standard browsers, testing for fallbacks falls on us",
-      "no transcript functionality",
+      "no transcript functionality - have to add our own",
+      "really high saturation",
     ],
     links: [
       { label: "Repo", href: "https://github.com/videojs/video.js" },
@@ -102,8 +108,8 @@ export const players: Player[] = [
     label: "MediaElement.js",
     href: "/mediaelement",
     description: [],
-    pros: [],
-    cons: [],
+    pros: ["All features WORK- fullscreen, buffer status"],
+    cons: ["slightly low saturation, same as Plyr"],
     links: [
       {
         label: "Repo",
@@ -122,7 +128,10 @@ export const players: Player[] = [
       "contains community plugins to work with other web frameworks, customizable in most aspects but no transcript functionality",
     ],
     pros: [],
-    cons: ["No transcript functionality"],
+    cons: [
+      "No transcript functionality",
+      "slightly low saturation same as MediaElement.js",
+    ],
     links: [
       { label: "Repo", href: "https://github.com/sampotts/plyr" },
       { label: "Site", href: "https://plyr.io/" },

@@ -1,13 +1,22 @@
+import { PlayerPageNav } from "@/components/player-page-nav";
+
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function AblePage() {
   return (
-    <div className="flex justify-center items-center w-2/3 h-full mx-auto">
-      <iframe
-        src={`${base}/able/index.html`}
-        className="w-full h-full border-0"
-        title="Able Player"
+    <>
+      <PlayerPageNav
+        next={{ label: "Acornplayer", href: "/acorn" }}
       />
-    </div>
+      <div className="w-2/3 mx-auto py-8">
+        <iframe
+          src={`${base}/able/index.html`}
+          className="w-full border-0"
+          style={{ height: "600px" }}
+          title="Able Player"
+          allowFullScreen
+        />
+      </div>
+    </>
   );
 }

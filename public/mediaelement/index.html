@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/7.0.7/mediaelementplayer.min.css" />
   </head>
   <body>
-    <video id="video1" preload="auto" style="max-width:100%">
-      <source type="video/mp4" src="../sample.mp4" />
-      <track kind="captions" src="../sample.vtt" srclang="en" label="English" />
+    <video id="video1" preload="auto" style="max-width:100%"
+      poster="https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg">
+      <source type="application/x-mpegURL" src="https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8" />
+        <!-- <track kind="captions" src="../sample.vtt" srclang="en" label="English" /> -->
     </video>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/7.0.7/mediaelement-and-player.min.js"></script>
@@ -16,6 +17,9 @@
       var player = new MediaElementPlayer("video1", {
         stretching: "responsive",
         iconSprite: "build/mejs-controls.svg",
+        hls: {
+          withCredentials: false,
+        },
       });
     </script>
   </body>
