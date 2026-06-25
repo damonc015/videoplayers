@@ -6,7 +6,7 @@ export default function AblePage() {
   return (
     <>
       <PlayerPageNav
-        next={{ label: "Acornplayer", href: "/acorn" }}
+        next={{ label: "Video.js", href: "/videojs" }}
       />
       <div className="w-2/3 mx-auto py-8">
         <iframe

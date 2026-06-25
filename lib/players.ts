@@ -3,30 +3,30 @@ export type Feature = {
   support: (0 | 1)[];
 };
 
-// support order: [Ableplayer, AcornPlayer, Video.js, MediaElement.js, Plyr]
+// support order: [Ableplayer, Video.js, MediaElement.js]
 export const features: Feature[] = [
-  { name: "Play/ Pause Controls", support: [1, 1, 1, 1, 1] },
-  { name: "Volume Controls", support: [1, 1, 1, 0, 1] },
-  { name: "Playlist Controls & Support", support: [1, 0, 0, 0, 0] },
-  { name: "Keyboard Navigation", support: [1, 1, 1, 1, 1] },
-  { name: "Fullscreen Controls", support: [1, 1, 1, 1, 1] },
+  { name: "Play/ Pause Controls", support: [1, 1, 1] },
+  { name: "Volume Controls", support: [1, 1, 0] },
+  { name: "Playlist Controls & Support", support: [1, 1, 1] },
+  { name: "Keyboard Navigation", support: [1, 1, 1] },
+  { name: "Fullscreen Controls", support: [1, 1, 1] },
   {
     name: "Closed Captions Control & Subtitles Support",
-    support: [1, 1, 1, 1, 1],
+    support: [1, 1, 1],
   },
-  { name: "Transcript Control & Support", support: [1, 0, 0, 0, 0] },
-  { name: "Picture-in-Picture", support: [0, 0, 1, 0, 1] },
-  { name: "Playback Speed Controls", support: [1, 0, 1, 0, 1] },
-  { name: "HD Quality Controls", support: [0, 0, 0, 0, 0] },
-  { name: "Duration Display", support: [1, 1, 1, 1, 1] },
-  { name: "Buffer Icon", support: [1, 1, 1, 1, 1] },
-  { name: "Load Icon", support: [1, 1, 1, 1, 1] },
-  { name: "Fallback for older browsers", support: [1, 0, 0, 0, 0] },
+  { name: "Transcript Control & Support", support: [1, 1, 1] },
+  { name: "Picture-in-Picture", support: [0, 1, 0] },
+  { name: "Playback Speed Controls", support: [1, 1, 0] },
+  { name: "HD Quality Controls", support: [0, 0, 0] },
+  { name: "Duration Display", support: [1, 1, 1] },
+  { name: "Buffer Icon", support: [1, 1, 1] },
+  { name: "Load Icon", support: [1, 1, 1] },
+  { name: "Fallback for older browsers", support: [1, 0, 0] },
   // double check this one
-  { name: "Thumbnail Insertion", support: [1, 1, 1, 1, 1] },
+  { name: "Thumbnail Insertion", support: [1, 1, 1] },
   // temp, maybe media format supported
-  { name: "HLS Streaming", support: [0, 0, 0, 0, 0] },
-  { name: "Language Translations", support: [0, 0, 0, 0, 1] },
+  { name: "HLS Streaming", support: [0, 0, 0] },
+  { name: "Language Translations", support: [0, 0, 0] },
 ];
 
 export type Player = {
@@ -65,25 +65,6 @@ export const players: Player[] = [
     ],
   },
   {
-    label: "Acornplayer",
-    href: "/acorn",
-    description: [
-      "Recently archived 3/31/26, possible it will no longer be maintained",
-    ],
-    pros: [],
-    cons: [
-      "Icon display box and closed captioning icon disappears in full screen mode. All other function icons and buffer player status were responsive. ",
-      "There is little to no control over the playback function and the picture-in-picture icon as it is not available in the bottom display and must be accessed via full screen mode. Transcript can only be accessed when selecting closed captioning language.",
-      "The playback and transcript functions do not have their own separate icons. Captions are not consistent as they disappear in full screen mode. Volume icon placement will change locations depending on the video or streaming platform. ",
-      "The icon display box becomes transparent in full screen mode and icons cannot be separately identified from one another. In addition, based on heuristics 1, 3 and 4, the design is simple but complex and inconsistent. ",
-      "lacks a few features old player held",
-      "may no longer be maintained",
-    ],
-    links: [
-      { label: "Repo", href: "https://github.com/ghinda/acornmediaplayer" },
-    ],
-  },
-  {
     label: "Video.js",
     href: "/videojs",
     description: [],
@@ -94,7 +75,6 @@ export const players: Player[] = [
     cons: [
       "Media player is inflexible with keyboard shortcuts. Functions require the user to interact with the icon to interact with the media player. ",
       "made for standard browsers, testing for fallbacks falls on us",
-      "no transcript functionality - have to add our own",
       "really high saturation on focus, no buffer spinner",
     ],
     links: [
@@ -107,7 +87,7 @@ export const players: Player[] = [
     href: "/mediaelement",
     description: [],
     pros: ["All features WORK- fullscreen, buffer status"],
-    cons: ["slightly low saturation on focus, same as Plyr"],
+    cons: ["slightly low saturation on focus"],
     links: [
       {
         label: "Repo",
@@ -117,22 +97,6 @@ export const players: Player[] = [
         label: "Repo for Plugins",
         href: "https://github.com/mediaelement/mediaelement-plugins?tab=readme-ov-file#es6",
       },
-    ],
-  },
-  {
-    label: "Plyr",
-    href: "/plyr",
-    description: [
-      "contains community plugins to work with other web frameworks, customizable in most aspects but no transcript functionality",
-    ],
-    pros: [],
-    cons: [
-      "No transcript functionality",
-      "slightly low saturation on focus, same as MediaElement.js",
-    ],
-    links: [
-      { label: "Repo", href: "https://github.com/sampotts/plyr" },
-      { label: "Site", href: "https://plyr.io/" },
     ],
   },
   {

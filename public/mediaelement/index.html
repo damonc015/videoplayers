@@ -4,22 +4,375 @@
     <meta charset="UTF-8" />
     <title>MediaElement.js Player</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/7.0.7/mediaelementplayer.min.css" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      #player-section {
+        width: 520px;
+        max-width: 100%;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      /* ── Playlist end-card overlay ───────────────────────── */
+      #playlist-overlay {
+        position: absolute;
+        bottom: 56px;
+        right: 10px;
+        display: flex;
+        gap: 10px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+        z-index: 200;
+      }
+      #playlist-overlay.visible { opacity: 1; pointer-events: auto; }
+
+      .playlist-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+      }
+      .playlist-circle {
+        width: 90px; height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(3px);
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .playlist-card:hover .playlist-circle { border-color: rgba(255,255,255,0.9); transform: scale(1.06); }
+      .playlist-circle img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+      .playlist-card-label {
+        font-size: 10px; color: rgba(255,255,255,0.8);
+        text-align: center; max-width: 90px; line-height: 1.3;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+      }
+
+      /* ── Custom control buttons ──────────────────────────── */
+      /*
+        .mejs__button > button already has position:absolute; margin:.625rem .375rem;
+        width/height:1.125rem from the MEJS stylesheet — we just adjust colour.
+      */
+      .mejs__playlist-prev-btn > button,
+      .mejs__playlist-next-btn > button { color: #f5c400; }
+      .mejs__playlist-prev-btn > button:hover,
+      .mejs__playlist-next-btn > button:hover { color: #fff; }
+
+      .mejs__transcript-btn { position: relative; }
+      .mejs__transcript-btn > button { color: #fff; opacity: 0.8; }
+      .mejs__transcript-btn > button:hover { opacity: 1; }
+
+      /* Vertical separator between native and custom buttons */
+      .mejs__custom-sep {
+        width: 1px;
+        height: 1.125rem;
+        background: rgba(255,255,255,0.25);
+        margin: 0.6875rem 0.375rem;
+        flex-shrink: 0;
+      }
+
+      /* Transcript popup */
+      .mejs__transcript-popup {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 6px;
+        background: rgba(28,28,28,0.95);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 4px;
+        min-width: 140px;
+        z-index: 500;
+        overflow: hidden;
+      }
+      .mejs__transcript-popup.open { display: block; }
+      .mejs__transcript-popup-heading {
+        padding: 7px 14px 5px;
+        font-size: 10px; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        color: #888;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        cursor: default; user-select: none;
+      }
+      .mejs__transcript-popup ul { list-style: none; }
+      .mejs__transcript-popup li {
+        padding: 6px 14px; font-size: 13px;
+        color: #fff; cursor: pointer; white-space: nowrap;
+      }
+      .mejs__transcript-popup li:hover { background: rgba(255,255,255,0.1); }
+    </style>
   </head>
   <body>
-    <video id="video1" preload="auto" style="max-width:100%"
-      poster="https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg">
-      <source type="application/x-mpegURL" src="https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8" />
-        <!-- <track kind="captions" src="../sample.vtt" srclang="en" label="English" /> -->
-    </video>
+    <div id="player-section">
+      <video id="video1" preload="auto" style="max-width:100%" poster="">
+        <source id="video-source" type="application/x-mpegURL" src="" />
+        <track id="caption-track" kind="captions" src="" srclang="en" label="English" />
+      </video>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/7.0.7/mediaelement-and-player.min.js"></script>
     <script>
-      var player = new MediaElementPlayer("video1", {
+      // ── Playlist data (mirrors lib/playlist.ts) ───────────────────────────
+      const PLAYLIST = [
+        {
+          title:  "Esther Horne — Reel 1",
+          hlsSrc: "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8",
+          vttSrc: "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_1.precision.en.vtt",
+          poster: "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg"
+        },
+        {
+          title:  "Esther Horne — Reel 2",
+          hlsSrc: "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_2_manifest.m3u8",
+          vttSrc: "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_2.precision.en.vtt",
+          poster: "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg"
+        },
+        {
+          title:  "Esther Horne — Reel 3",
+          hlsSrc: "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_3_manifest.m3u8",
+          vttSrc: "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_3.precision.en.vtt",
+          poster: "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg"
+        }
+      ];
+
+      const currentIndex = Math.max(0, Math.min(
+        PLAYLIST.length - 1,
+        parseInt(new URLSearchParams(location.search).get("reel") || "0")
+      ));
+      const currentItem = PLAYLIST[currentIndex];
+
+      document.getElementById("video1").poster        = currentItem.poster;
+      document.getElementById("video-source").src     = currentItem.hlsSrc;
+      document.getElementById("caption-track").src    = currentItem.vttSrc;
+
+      // ── Helpers (mirrors lib/playlist.ts) ────────────────────────────────
+
+      function pad2(n) { return String(Math.floor(n)).padStart(2, "0"); }
+
+      function formatTimeTxt(secs) {
+        const h = Math.floor(secs / 3600);
+        const m = Math.floor((secs % 3600) / 60);
+        const s = (secs % 60).toFixed(3).padStart(6, "0");
+        return `${pad2(h)}:${pad2(m)}:${s}`;
+      }
+
+      function parseTimestamp(ts) {
+        const parts = ts.trim().split(":");
+        if (parts.length === 3) return parseFloat(parts[0])*3600 + parseFloat(parts[1])*60 + parseFloat(parts[2]);
+        if (parts.length === 2) return parseFloat(parts[0])*60 + parseFloat(parts[1]);
+        return 0;
+      }
+
+      function parseVttCues(text) {
+        const cues = [];
+        text.split(/\n{2,}/).forEach(block => {
+          const lines = block.trim().split("\n");
+          let tsIdx = -1;
+          for (let i = 0; i < lines.length; i++) {
+            if (lines[i].includes("-->")) { tsIdx = i; break; }
+          }
+          if (tsIdx < 0) return;
+          const start = parseTimestamp(lines[tsIdx].split("-->")[0]);
+          const cueText = lines.slice(tsIdx+1).join(" ").replace(/<[^>]+>/g,"").trim();
+          if (cueText) cues.push({ start, text: cueText });
+        });
+        return cues;
+      }
+
+      function buildTranscriptText(cues) {
+        const groups = [];
+        let current = null;
+        cues.forEach(cue => {
+          const raw = cue.text.replace(/\n\s*/g, " ").trim();
+          if (!raw) return;
+          const m = raw.match(/^(Speaker \d+):\s*/);
+          if (m) {
+            current = { speaker: m[1], time: cue.start, text: raw.slice(m[0].length) };
+            groups.push(current);
+          } else if (current) {
+            current.text += (current.text ? " " : "") + raw;
+          } else {
+            current = { speaker: null, time: cue.start, text: raw };
+            groups.push(current);
+          }
+        });
+        return groups
+          .filter(g => g.text)
+          .map(g => (g.speaker ? `${g.speaker} ` : "") + formatTimeTxt(g.time) + "\n" + g.text)
+          .join("\n\n") + "\n";
+      }
+
+      function openTranscriptTab(vttUrl) {
+        fetch(vttUrl)
+          .then(r => r.text())
+          .then(text => {
+            const blob = new Blob([buildTranscriptText(parseVttCues(text))], { type: "text/plain" });
+            window.open(URL.createObjectURL(blob), "_blank");
+          })
+          .catch(e => console.error("Transcript fetch failed:", e));
+      }
+
+      function navigateTo(index) {
+        const p = new URLSearchParams(location.search);
+        p.set("reel", index);
+        location.href = `${location.pathname}?${p.toString()}`;
+      }
+
+      // ── End-card overlay ──────────────────────────────────────────────────
+
+      function buildPlaylistOverlay() {
+        const section = document.getElementById("player-section");
+        const overlay = document.createElement("div");
+        overlay.id = "playlist-overlay";
+        PLAYLIST.forEach((item, idx) => {
+          if (idx <= currentIndex) return;
+          const card   = document.createElement("div");   card.className = "playlist-card";
+          const circle = document.createElement("div");   circle.className = "playlist-circle";
+          const img    = document.createElement("img");   img.src = item.poster; img.alt = item.title;
+          const label  = document.createElement("span");  label.className = "playlist-card-label"; label.textContent = item.title;
+          circle.appendChild(img);
+          card.appendChild(circle);
+          card.appendChild(label);
+          card.addEventListener("click", () => navigateTo(idx));
+          overlay.appendChild(card);
+        });
+        if (overlay.children.length) section.appendChild(overlay);
+      }
+
+      let overlayVisible = false;
+      function syncOverlay(currentTime, duration) {
+        const overlay = document.getElementById("playlist-overlay");
+        if (!overlay || !(duration > 0)) return;
+        const nearEnd = currentTime >= duration - 20;
+        if (nearEnd !== overlayVisible) {
+          overlay.classList.toggle("visible", nearEnd);
+          overlayVisible = nearEnd;
+        }
+      }
+
+      // ── Custom control injection ──────────────────────────────────────────
+      // MEJS buttons: .mejs__button wrapper (width:2rem; height:2.5rem)
+      // with > button inside (position:absolute; margin:.625rem .375rem;
+      // width:1.125rem; height:1.125rem) — matches native MEJS styling.
+
+      function makeMejsBtn(wrapClass, ariaLabel, svgPath, onClick) {
+        const wrap = document.createElement("div");
+        wrap.className = `mejs__button ${wrapClass}`;
+
+        const btn = document.createElement("button");
+        btn.setAttribute("type", "button");
+        btn.setAttribute("aria-label", ariaLabel);
+        btn.innerHTML =
+          `<svg focusable="false" aria-hidden="true" viewBox="0 0 20 20"` +
+          ` width="1.125rem" height="1.125rem" fill="currentColor">` +
+          `<path d="${svgPath}"/></svg>`;
+        btn.addEventListener("click", onClick);
+
+        wrap.appendChild(btn);
+        return wrap;
+      }
+
+      function addControlButtons(video) {
+        const controls = document.querySelector(".mejs__controls");
+        if (!controls) return;
+
+        // Separator
+        const sep = document.createElement("div");
+        sep.className = "mejs__custom-sep";
+        controls.appendChild(sep);
+
+        if (currentIndex > 0) {
+          controls.appendChild(makeMejsBtn(
+            "mejs__playlist-prev-btn",
+            "Previous reel",
+            "M5 17.5v-15h2.5v6.875l6.25-6.25v13.75l-6.25-6.25v6.875z",
+            () => navigateTo(currentIndex - 1)
+          ));
+        }
+
+        if (currentIndex < PLAYLIST.length - 1) {
+          controls.appendChild(makeMejsBtn(
+            "mejs__playlist-next-btn",
+            "Next reel",
+            "M15 2.5v15h-2.5v-6.875l-6.25 6.25v-13.75l6.25 6.25v-6.875z",
+            () => navigateTo(currentIndex + 1)
+          ));
+        }
+
+        // Transcript button with language popup
+        const transcriptWrap = document.createElement("div");
+        transcriptWrap.className = "mejs__button mejs__transcript-btn";
+
+        const popup = document.createElement("div");
+        popup.className = "mejs__transcript-popup";
+
+        const heading = document.createElement("div");
+        heading.className = "mejs__transcript-popup-heading";
+        heading.textContent = "Languages";
+        popup.appendChild(heading);
+
+        const ul = document.createElement("ul");
+        const li = document.createElement("li");
+        li.textContent = "English";
+        li.addEventListener("click", e => {
+          e.stopPropagation();
+          popup.classList.remove("open");
+          openTranscriptTab(currentItem.vttSrc);
+        });
+        ul.appendChild(li);
+        popup.appendChild(ul);
+
+        const transcriptBtn = document.createElement("button");
+        transcriptBtn.setAttribute("type", "button");
+        transcriptBtn.setAttribute("aria-label", "View transcript");
+        transcriptBtn.setAttribute("aria-haspopup", "menu");
+        transcriptBtn.setAttribute("aria-expanded", "false");
+        transcriptBtn.innerHTML =
+          `<svg focusable="false" aria-hidden="true" viewBox="0 0 20 20"` +
+          ` width="1.125rem" height="1.125rem" fill="currentColor">` +
+          `<path d="M0 19.107v-17.857q0-0.446 0.313-0.759t0.759-0.313h8.929v6.071q0 0.446 0.313 0.759t0.759 0.313h6.071v11.786q0 0.446-0.313 0.759t-0.759 0.312h-15q-0.446 0-0.759-0.313t-0.313-0.759zM4.286 15.536q0 0.156 0.1 0.257t0.257 0.1h7.857q0.156 0 0.257-0.1t0.1-0.257v-0.714q0-0.156-0.1-0.257t-0.257-0.1h-7.857q-0.156 0-0.257 0.1t-0.1 0.257v0.714zM4.286 12.679q0 0.156 0.1 0.257t0.257 0.1h7.857q0.156 0 0.257-0.1t0.1-0.257v-0.714q0-0.156-0.1-0.257t-0.257-0.1h-7.857q-0.156 0-0.257 0.1t-0.1 0.257v0.714zM4.286 9.821q0 0.156 0.1 0.257t0.257 0.1h7.857q0.156 0 0.257-0.1t0.1-0.257v-0.714q0-0.156-0.1-0.257t-0.257-0.1h-7.857q-0.156 0-0.257 0.1t-0.1 0.257v0.714zM11.429 5.893v-5.268q0.246 0.156 0.402 0.313l4.554 4.554q0.156 0.156 0.313 0.402h-5.268z"/></svg>`;
+        transcriptBtn.addEventListener("click", e => {
+          e.stopPropagation();
+          const isOpen = popup.classList.contains("open");
+          popup.classList.toggle("open", !isOpen);
+          transcriptBtn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+        });
+
+        transcriptWrap.appendChild(transcriptBtn);
+        transcriptWrap.appendChild(popup);
+        controls.appendChild(transcriptWrap);
+
+        document.addEventListener("click", e => {
+          if (!transcriptWrap.contains(e.target)) {
+            popup.classList.remove("open");
+            transcriptBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+
+        video.addEventListener("timeupdate", () => {
+          syncOverlay(video.currentTime, video.duration);
+        });
+      }
+
+      // ── Init ─────────────────────────────────────────────────────────────
+
+      const player = new MediaElementPlayer("video1", {
         stretching: "responsive",
         iconSprite: "build/mejs-controls.svg",
-        hls: {
-          withCredentials: false,
-        },
+        hls: { withCredentials: false },
+        success(media) {
+          addControlButtons(media);
+          buildPlaylistOverlay();
+        }
       });
     </script>
   </body>

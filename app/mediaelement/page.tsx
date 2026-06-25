@@ -7,7 +7,6 @@ export default function MediaElementPage() {
     <>
       <PlayerPageNav
         prev={{ label: "Video.js", href: "/videojs" }}
-        next={{ label: "Plyr", href: "/plyr" }}
       />
       <div className="flex justify-center items-center w-1/2 h-full mx-auto">
         <iframe
