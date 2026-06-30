@@ -19,14 +19,29 @@
       #player-section {
         width: 100%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
       }
 
+      /* .able-wrapper and .able-controller are direct children of #player-section */
       .able-wrapper {
+        flex: 1 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
         width: 100% !important;
-        height: 100% !important;
-        max-width: 100%;
-        position: relative;
+        max-width: 100% !important;
+        position: relative !important;
       }
+
+      /* Pass height constraint down through AblePlayer's inner divs */
+      .able,
+      .able-media-container,
+      .able-vidcap-container {
+        height: 100% !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+      }
+
       .able-wrapper video {
         width: 100% !important;
         height: 100% !important;

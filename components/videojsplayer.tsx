@@ -208,6 +208,19 @@ function ControlsPortal({ currentIndex }: { currentIndex: number }) {
   return createPortal(<PlaylistButtons currentIndex={currentIndex} />, controlsEl);
 }
 
+function ClickToPlay() {
+  const media = useMedia();
+  return (
+    <div
+      style={{ position: "absolute", inset: 0, zIndex: 1, cursor: "pointer" }}
+      onClick={() => {
+        if (!media) return;
+        media.paused ? media.play() : media.pause();
+      }}
+    />
+  );
+}
+
 // ── Main component ─────────────────────────────────────────────────
 
 export function MyPlayer() {
@@ -223,6 +236,7 @@ export function MyPlayer() {
           <Video src={item.hlsSrc} playsInline poster={item.poster}>
             <track kind="captions" src={item.vttSrc} srcLang="en" label="English" />
           </Video>
+          <ClickToPlay />
           <PlaylistOverlay currentIndex={currentIndex} />
           <ControlsPortal currentIndex={currentIndex} />
         </VideoSkin>
