@@ -1,14 +1,9 @@
-import { PlayerPageNav } from "@/components/player-page-nav";
-
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function MediaElementPage() {
   return (
     <>
-      <PlayerPageNav
-        prev={{ label: "Video.js", href: "/videojs" }}
-      />
-      <div className="flex justify-center items-center w-1/2 h-full mx-auto">
+      <div className="flex-1 w-full overflow-hidden">
         <iframe
           src={`${base}/mediaelement/index.html`}
           className="w-full h-full border-0"

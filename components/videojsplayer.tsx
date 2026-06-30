@@ -217,9 +217,9 @@ export function MyPlayer() {
   const item = PLAYLIST[currentIndex];
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <Player.Provider>
-        <VideoSkin>
+        <VideoSkin style={{ "--media-border-radius": "0px" } as React.CSSProperties}>
           <Video src={item.hlsSrc} playsInline poster={item.poster}>
             <track kind="captions" src={item.vttSrc} srcLang="en" label="English" />
           </Video>

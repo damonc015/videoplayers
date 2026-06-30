@@ -9,24 +9,28 @@
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        min-height: 100vh;
-        padding: 24px;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
       }
 
+      html { height: 100%; overflow: hidden; }
+
       #player-section {
-        width: 520px;
-        max-width: 100%;
-        margin: 0 auto;
+        width: 100%;
+        height: 100%;
       }
 
       .able-wrapper {
         width: 100% !important;
+        height: 100% !important;
         max-width: 100%;
         position: relative;
       }
       .able-wrapper video {
         width: 100% !important;
-        height: auto !important;
+        height: 100% !important;
+        object-fit: fill !important;
       }
 
       /* ── Playlist end-card overlay ───────────────────────── */

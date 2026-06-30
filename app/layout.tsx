@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { PlayerNav } from "../components/player-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +29,8 @@ export default function RootLayout({
     >
       <body
         suppressHydrationWarning={true}
-        className="h-full w-full flex flex-col overflow-y-scroll"
+        className="h-full w-full flex flex-col overflow-hidden"
       >
-        <PlayerNav />
         {children}
       </body>
     </html>

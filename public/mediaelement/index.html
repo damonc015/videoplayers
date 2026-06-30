@@ -9,15 +9,25 @@
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        min-height: 100vh;
-        padding: 24px;
+        height: 100%;
+        margin: 0;
       }
 
+      html { height: 100%; }
+
       #player-section {
-        width: 520px;
-        max-width: 100%;
-        margin: 0 auto;
+        width: 100%;
+        height: 100%;
         position: relative;
+      }
+
+      .mejs__container,
+      .mejs__overlay,
+      .mejs__mediaelement,
+      .mejs__mediaelement video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: fill !important;
       }
 
       /* ── Playlist end-card overlay ───────────────────────── */
@@ -114,7 +124,7 @@
   </head>
   <body>
     <div id="player-section">
-      <video id="video1" preload="auto" style="max-width:100%" poster="">
+      <video id="video1" preload="auto" style="width:100%;height:100%" poster="">
         <source id="video-source" type="application/x-mpegURL" src="" />
         <track id="caption-track" kind="captions" src="" srclang="en" label="English" />
       </video>
