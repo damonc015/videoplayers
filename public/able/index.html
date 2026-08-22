@@ -5,7 +5,13 @@
     <title>Able Player</title>
     <link rel="stylesheet" href="build/ableplayer.min.css" />
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -14,7 +20,10 @@
         overflow: hidden;
       }
 
-      html { height: 100%; overflow: hidden; }
+      html {
+        height: 100%;
+        overflow: hidden;
+      }
 
       #player-section {
         width: 100%;
@@ -81,7 +90,9 @@
         border: 2px solid rgba(255, 255, 255, 0.45);
         background: rgba(0, 0, 0, 0.35);
         backdrop-filter: blur(3px);
-        transition: border-color 0.2s, transform 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
       }
       .playlist-card:hover .playlist-circle {
         border-color: rgba(255, 255, 255, 0.9);
@@ -104,7 +115,9 @@
       }
 
       /* Transcript language popup — anchored above the button */
-      .able-button-handler-view-transcript { position: relative; }
+      .able-button-handler-view-transcript {
+        position: relative;
+      }
       .able-popup-transcript {
         position: absolute !important;
         bottom: 100% !important;
@@ -156,7 +169,20 @@
   <body>
     <div id="player-section">
       <video id="video1" data-able-player preload="metadata" poster="">
-        <track id="caption-track" kind="captions" srclang="en" label="English" src="" />
+        <track
+          id="caption-track"
+          kind="captions"
+          srclang="en"
+          label="English"
+          src=""
+        />
+        <track
+          id="caption-track-es"
+          kind="captions"
+          srclang="es"
+          label="Spanish"
+          src=""
+        />
       </video>
     </div>
 
@@ -171,33 +197,47 @@
     <script>
       const PLAYLIST = [
         {
-          title:  "Esther Horne — Reel 1",
-          hlsSrc: "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8",
-          vttSrc: "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_1.precision.en.vtt",
-          poster: "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg"
+          title: "Esther Horne — Reel 1",
+          hlsSrc:
+            "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8",
+          vttSrc:
+            "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_1.precision.en.vtt",
+          vttSrcEs: "esther_horne_reel1_es.vtt",
+          poster:
+            "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg",
         },
         {
-          title:  "Esther Horne — Reel 2",
-          hlsSrc: "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_2_manifest.m3u8",
-          vttSrc: "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_2.precision.en.vtt",
-          poster: "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg"
+          title: "Esther Horne — Reel 2",
+          hlsSrc:
+            "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_2_manifest.m3u8",
+          vttSrc:
+            "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_2.precision.en.vtt",
+          poster:
+            "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg",
         },
         {
-          title:  "Esther Horne — Reel 3",
-          hlsSrc: "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_3_manifest.m3u8",
-          vttSrc: "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_3.precision.en.vtt",
-          poster: "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg"
-        }
+          title: "Esther Horne — Reel 3",
+          hlsSrc:
+            "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_3_manifest.m3u8",
+          vttSrc:
+            "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_3.precision.en.vtt",
+          poster:
+            "https://dlib.nyu.edu/files/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_thumbnail.jpg",
+        },
       ];
 
-      const currentIndex = Math.max(0, Math.min(
-        PLAYLIST.length - 1,
-        parseInt(new URLSearchParams(location.search).get("reel") || "0")
-      ));
+      const currentIndex = Math.max(
+        0,
+        Math.min(
+          PLAYLIST.length - 1,
+          parseInt(new URLSearchParams(location.search).get("reel") || "0"),
+        ),
+      );
       const currentItem = PLAYLIST[currentIndex];
 
       document.getElementById("video1").poster = currentItem.poster;
       document.getElementById("caption-track").src = currentItem.vttSrc;
+      document.getElementById("caption-track-es").src = currentItem.vttSrcEs || "";
     </script>
 
     <script src="build/ableplayer.min.js"></script>
@@ -207,7 +247,9 @@
 
       // ── Helpers ────────────────────────────────────────────────────────────
 
-      function pad2(n) { return String(Math.floor(n)).padStart(2, "0"); }
+      function pad2(n) {
+        return String(Math.floor(n)).padStart(2, "0");
+      }
 
       // Flatten Able Player's WebVTT component tree → plain text
       function flattenComponent(c) {
@@ -215,7 +257,9 @@
         if (c.type === "string") return c.value || "";
         return (c.children || []).map(flattenComponent).join("");
       }
-      function cueToText(cue) { return flattenComponent(cue.components).trim(); }
+      function cueToText(cue) {
+        return flattenComponent(cue.components).trim();
+      }
 
       // ── Transcript tab ─────────────────────────────────────────────────────
       // Groups cues by speaker, merges continuation cues, opens as plain text.
@@ -230,12 +274,16 @@
       function buildTranscriptText(cues) {
         const groups = [];
         let current = null;
-        cues.forEach(cue => {
+        cues.forEach((cue) => {
           const raw = cueToText(cue).replace(/\n\s*/g, " ").trim();
           if (!raw) return;
           const m = raw.match(/^(Speaker \d+):\s*/);
           if (m) {
-            current = { speaker: m[1], time: cue.start, text: raw.slice(m[0].length) };
+            current = {
+              speaker: m[1],
+              time: cue.start,
+              text: raw.slice(m[0].length),
+            };
             groups.push(current);
           } else if (current) {
             current.text += (current.text ? " " : "") + raw;
@@ -244,14 +292,24 @@
             groups.push(current);
           }
         });
-        return groups
-          .filter(g => g.text)
-          .map(g => (g.speaker ? `${g.speaker} ` : "") + formatTimeTxt(g.time) + "\n" + g.text)
-          .join("\n\n") + "\n";
+        return (
+          groups
+            .filter((g) => g.text)
+            .map(
+              (g) =>
+                (g.speaker ? `${g.speaker} ` : "") +
+                formatTimeTxt(g.time) +
+                "\n" +
+                g.text,
+            )
+            .join("\n\n") + "\n"
+        );
       }
 
       function openTranscriptTab(cues) {
-        const blob = new Blob([buildTranscriptText(cues)], { type: "text/plain" });
+        const blob = new Blob([buildTranscriptText(cues)], {
+          type: "text/plain",
+        });
         window.open(URL.createObjectURL(blob), "_blank");
       }
 
@@ -286,8 +344,11 @@
         btn.appendChild(svg);
 
         btn.addEventListener("click", onClick);
-        btn.addEventListener("keydown", e => {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); }
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClick();
+          }
         });
         return btn;
       }
@@ -300,33 +361,42 @@
       }
 
       function addControlButtons(cues) {
-        const target = document.querySelector(".able-right-controls") ||
-                       document.querySelector(".able-controller");
+        const target =
+          document.querySelector(".able-right-controls") ||
+          document.querySelector(".able-controller");
         if (!target) return;
 
         target.appendChild(makePipe());
 
         if (currentIndex > 0) {
-          target.appendChild(makeControlBtn(
-            "prev-item", "Previous reel",
-            "0 0 20 20",
-            "M5 17.5v-15h2.5v6.875l6.25-6.25v13.75l-6.25-6.25v6.875z",
-            () => navigateTo(currentIndex - 1)
-          ));
+          target.appendChild(
+            makeControlBtn(
+              "prev-item",
+              "Previous reel",
+              "0 0 20 20",
+              "M5 17.5v-15h2.5v6.875l6.25-6.25v13.75l-6.25-6.25v6.875z",
+              () => navigateTo(currentIndex - 1),
+            ),
+          );
         }
 
         if (currentIndex < PLAYLIST.length - 1) {
-          target.appendChild(makeControlBtn(
-            "next-item", "Next reel",
-            "0 0 20 20",
-            "M15 2.5v15h-2.5v-6.875l-6.25 6.25v-13.75l6.25 6.25v-6.875z",
-            () => navigateTo(currentIndex + 1)
-          ));
+          target.appendChild(
+            makeControlBtn(
+              "next-item",
+              "Next reel",
+              "0 0 20 20",
+              "M15 2.5v15h-2.5v-6.875l-6.25 6.25v-13.75l6.25 6.25v-6.875z",
+              () => navigateTo(currentIndex + 1),
+            ),
+          );
         }
 
         // Transcript button with language popup
         const player = AblePlayerInstances[0];
-        const captionTracks = (player.captions || []).filter(t => t.cues && t.cues.length);
+        const captionTracks = (player.captions || []).filter(
+          (t) => t.cues && t.cues.length,
+        );
 
         // Build the popup menu using Able Player's .able-popup class so it
         // inherits all existing popup styling automatically.
@@ -342,18 +412,18 @@
         heading.textContent = "Languages";
         transcriptMenu.appendChild(heading);
 
-        captionTracks.forEach(track => {
+        captionTracks.forEach((track) => {
           const li = document.createElement("li");
           li.setAttribute("role", "menuitem");
           li.setAttribute("tabindex", "-1");
           li.textContent = track.label || track.language || "Transcript";
-          li.addEventListener("click", e => {
+          li.addEventListener("click", (e) => {
             e.stopPropagation();
             transcriptMenu.style.display = "none";
             transcriptBtn.setAttribute("aria-expanded", "false");
             openTranscriptTab(track.cues);
           });
-          li.addEventListener("keydown", e => {
+          li.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               li.click();
@@ -363,17 +433,21 @@
         });
 
         const transcriptBtn = makeControlBtn(
-          "view-transcript", "View transcript",
+          "view-transcript",
+          "View transcript",
           "0 0 20 20",
           "M0 19.107v-17.857q0-0.446 0.313-0.759t0.759-0.313h8.929v6.071q0 0.446 0.313 0.759t0.759 0.313h6.071v11.786q0 0.446-0.313 0.759t-0.759 0.312h-15q-0.446 0-0.759-0.313t-0.313-0.759zM4.286 15.536q0 0.156 0.1 0.257t0.257 0.1h7.857q0.156 0 0.257-0.1t0.1-0.257v-0.714q0-0.156-0.1-0.257t-0.257-0.1h-7.857q-0.156 0-0.257 0.1t-0.1 0.257v0.714zM4.286 12.679q0 0.156 0.1 0.257t0.257 0.1h7.857q0.156 0 0.257-0.1t0.1-0.257v-0.714q0-0.156-0.1-0.257t-0.257-0.1h-7.857q-0.156 0-0.257 0.1t-0.1 0.257v0.714zM4.286 9.821q0 0.156 0.1 0.257t0.257 0.1h7.857q0.156 0 0.257-0.1t0.1-0.257v-0.714q0-0.156-0.1-0.257t-0.257-0.1h-7.857q-0.156 0-0.257 0.1t-0.1 0.257v0.714zM11.429 5.893v-5.268q0.246 0.156 0.402 0.313l4.554 4.554q0.156 0.156 0.313 0.402h-5.268z",
           () => {
             const isOpen = transcriptMenu.style.display !== "none";
             transcriptMenu.style.display = isOpen ? "none" : "";
-            transcriptBtn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+            transcriptBtn.setAttribute(
+              "aria-expanded",
+              isOpen ? "false" : "true",
+            );
             if (!isOpen && transcriptMenu.firstChild) {
               transcriptMenu.firstChild.focus();
             }
-          }
+          },
         );
         transcriptBtn.setAttribute("aria-haspopup", "menu");
         transcriptBtn.setAttribute("aria-expanded", "false");
@@ -385,7 +459,7 @@
         target.appendChild(transcriptBtn);
 
         // Close menu when clicking anywhere outside the button
-        document.addEventListener("click", e => {
+        document.addEventListener("click", (e) => {
           if (!transcriptBtn.contains(e.target)) {
             transcriptMenu.style.display = "none";
             transcriptBtn.setAttribute("aria-expanded", "false");
@@ -451,7 +525,8 @@
           hls.loadSource(currentItem.hlsSrc);
           hls.attachMedia(video);
           hls.on(Hls.Events.ERROR, (_e, data) => {
-            if (data.fatal) console.error("HLS error:", data.type, data.details);
+            if (data.fatal)
+              console.error("HLS error:", data.type, data.details);
           });
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = currentItem.hlsSrc;
@@ -464,7 +539,8 @@
 
       function init() {
         const player = AblePlayerInstances[0];
-        const cues = player.captions && player.captions[0] && player.captions[0].cues;
+        const cues =
+          player.captions && player.captions[0] && player.captions[0].cues;
 
         addControlButtons(cues || []);
         buildPlaylistOverlay();
