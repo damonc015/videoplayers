@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "gen-able-config": "node scripts/gen-able-config.mjs",
+    "dev": "node scripts/gen-able-config.mjs && next dev",
+    "prebuild": "node scripts/gen-able-config.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

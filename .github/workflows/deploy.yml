@@ -3,31 +3,48 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: touch out/.nojekyll
+          cache-dependency-path: proto/package-lock.json
+
+      - name: Install dependencies
+        working-directory: proto
+        run: npm ci
+
+      - name: Build
+        working-directory: proto
+        run: npm run build
+        env:
+          # Set ABLE_HLS_BASE in your repo:
+          # Settings → Secrets and variables → Actions → Variables → New repository variable
+          ABLE_HLS_BASE: ${{ vars.ABLE_HLS_BASE }}
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: proto/out
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

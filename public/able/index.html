@@ -189,17 +189,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1.6.15/dist/hls.min.js"></script>
 
+    <!-- Injected at build time by scripts/gen-able-config.mjs (sets window.ABLE_ENV) -->
+    <script src="env-config.js"></script>
+
     <!--
       Set sources BEFORE ableplayer.min.js — jQuery's $(function(){}) fires
       immediately when DOM is already ready (scripts at end of body), so Able
       Player initialises the moment ableplayer.min.js executes.
     -->
     <script>
+      const hlsBase =
+        (window.ABLE_ENV && window.ABLE_ENV.hlsBase) ||
+        "https://stream.dlib.nyu.edu";
+
       const PLAYLIST = [
         {
           title: "Esther Horne — Reel 1",
           hlsSrc:
-            "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8",
+            hlsBase + "/vod/_definst_/mp4:tamwag/rosie/2_ESTHER_HORNE_REEL_1_3200k.mp4/playlist.m3u8",
           vttSrc:
             "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_1.precision.en.vtt",
           vttSrcEs: "esther_horne_reel1_es.vtt",
@@ -209,7 +216,7 @@
         {
           title: "Esther Horne — Reel 2",
           hlsSrc:
-            "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_2_manifest.m3u8",
+            hlsBase + "/vod/_definst_/mp4:tamwag/rosie/2_ESTHER_HORNE_REEL_2_3200k.mp4/playlist.m3u8",
           vttSrc:
             "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_2.precision.en.vtt",
           poster:
@@ -218,7 +225,7 @@
         {
           title: "Esther Horne — Reel 3",
           hlsSrc:
-            "https://stream.dlib.nyu.edu/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_3_manifest.m3u8",
+            hlsBase + "/vod/_definst_/mp4:tamwag/rosie/2_ESTHER_HORNE_REEL_3_3200k.mp4/playlist.m3u8",
           vttSrc:
             "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_3.precision.en.vtt",
           poster:

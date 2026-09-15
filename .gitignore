@@ -32,8 +32,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
 .env*
+# env files (never commit — use GitHub Actions repository variables for CI)
+.env*
+
+# generated at build time by scripts/gen-able-config.mjs — do not commit
+public/able/env-config.js
 
 # vercel
 .vercel
