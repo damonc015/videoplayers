@@ -13,21 +13,26 @@
         padding: 0;
       }
 
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
+      html {
+        min-height: 100%;
       }
 
-      html {
-        height: 100%;
-        overflow: hidden;
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        overflow: auto;
       }
 
       #player-section {
-        width: 100%;
-        height: 100%;
+        width: 50%;
+        height: 50vh;
+        flex: none;
         display: flex;
         flex-direction: column;
       }
@@ -36,7 +41,7 @@
       .able-wrapper {
         flex: 1 !important;
         min-height: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         width: 100% !important;
         max-width: 100% !important;
         position: relative !important;
@@ -198,15 +203,16 @@
       Player initialises the moment ableplayer.min.js executes.
     -->
     <script>
-      const hlsBase =
-        (window.ABLE_ENV && window.ABLE_ENV.hlsBase) ||
-        "https://stream.dlib.nyu.edu";
+      const hlsBase = "https://stream.dlib.nyu.edu";
+      // (window.ABLE_ENV && window.ABLE_ENV.hlsBase) ||
+      // "https://stream.dlib.nyu.edu";
 
       const PLAYLIST = [
         {
           title: "Esther Horne — Reel 1",
           hlsSrc:
-            hlsBase + "/vod/_definst_/mp4:tamwag/rosie/2_ESTHER_HORNE_REEL_1_3200k.mp4/playlist.m3u8",
+            hlsBase +
+            "/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_1_manifest.m3u8",
           vttSrc:
             "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_1.precision.en.vtt",
           vttSrcEs: "esther_horne_reel1_es.vtt",
@@ -216,7 +222,8 @@
         {
           title: "Esther Horne — Reel 2",
           hlsSrc:
-            hlsBase + "/vod/_definst_/mp4:tamwag/rosie/2_ESTHER_HORNE_REEL_2_3200k.mp4/playlist.m3u8",
+            hlsBase +
+            "/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_2_manifest.m3u8",
           vttSrc:
             "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_2.precision.en.vtt",
           poster:
@@ -225,7 +232,8 @@
         {
           title: "Esther Horne — Reel 3",
           hlsSrc:
-            hlsBase + "/vod/_definst_/mp4:tamwag/rosie/2_ESTHER_HORNE_REEL_3_3200k.mp4/playlist.m3u8",
+            hlsBase +
+            "/hls-vod/tamwag/rosie/2_ESTHER_HORNE_REEL_3_manifest.m3u8",
           vttSrc:
             "https://sites.dlib.nyu.edu/media/api/v0/service/fileserver/av/tamwag/rosie/2_ESTHER_HORNE/2_ESTHER_HORNE_REEL_3.precision.en.vtt",
           poster:
@@ -244,7 +252,8 @@
 
       document.getElementById("video1").poster = currentItem.poster;
       document.getElementById("caption-track").src = currentItem.vttSrc;
-      document.getElementById("caption-track-es").src = currentItem.vttSrcEs || "";
+      document.getElementById("caption-track-es").src =
+        currentItem.vttSrcEs || "";
     </script>
 
     <script src="build/ableplayer.min.js"></script>
